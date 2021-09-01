@@ -28,3 +28,32 @@ if download_data:
 
 #%%
 #load data csv
+import pandas as pd
+
+def load_housing_data(housing_path=HOUSING_PATH):
+    csv_path = os.path.join(housing_path, "housing.csv")
+    return pd.read_csv(csv_path)
+
+housing = load_housing_data()
+
+# %%
+#take a look at the df
+housing.head()
+housing.info()
+#all features are floats except for ocean_proximity
+#total_bedrooms has some missing values
+
+# %%
+#take a look at ocean_proximity feature
+housing["ocean_proximity"].value_counts()
+
+#%%
+#use describe to take a look at all numerical features
+housing.describe()
+
+# %%
+#use matplotlib to plot histograms
+# only use this in ipynb: %matplotlib inline 
+import matplotlib.pyplot as plt
+housing.hist(bins=50, figsize=(20,15))
+plt.show()
