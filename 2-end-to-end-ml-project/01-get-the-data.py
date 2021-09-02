@@ -57,3 +57,46 @@ housing.describe()
 import matplotlib.pyplot as plt
 housing.hist(bins=50, figsize=(20,15))
 plt.show()
+
+### observations from histograms
+###     median income is not in USD, ~10s of thousands
+###     housing_median_age & median_house_value were capped
+###     features have very different scales
+###     many histograms are tail-heavy
+
+# %%
+#now to split into training and test
+from sklearn.model_selection import train_test_split
+train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
+
+# %%
+import numpy as np
+#or if we want to do stratified splitting instead
+#for example median_income is likely a very important feature
+#looking at the histogram, most values are 1.5 - 6.0, 
+#so defining income categories
+housing["income_cat"] = pd.cut(housing["median_income"],
+                               bins=[0., 1.5, 3.0, 4.5, 6., np.inf],
+                               labels=[1, 2, 3, 4, 5])
+
+#and taking a quick look at the bins
+housing["income_cat"].hist()
+
+# %%
+#now using stratified sampling from sklearn
+from sklearn.model_selection import StratifiedShuffleSplit
+
+split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+for train_index, test_index in split.split(housing, housing["income_cat"]):
+    strat_train_set = housing.loc[train_index]
+    strat_test_set = housing.loc[test_index]
+
+# %%
+#quick check to see if it worked
+print("test ratios:", strat_test_set["income_cat"].value_counts()/len(strat_test_set))
+print("train ratios:", strat_train_set["income_cat"].value_counts()/len(strat_train_set))
+
+# %%
+#dropping income_cat
+for set_ in (strat_train_set, strat_test_set):
+    set_.drop("income_cat", axis=1, inplace=True)
