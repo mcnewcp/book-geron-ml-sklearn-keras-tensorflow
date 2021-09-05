@@ -100,3 +100,5 @@ print("train ratios:", strat_train_set["income_cat"].value_counts()/len(strat_tr
 #dropping income_cat
 for set_ in (strat_train_set, strat_test_set):
     set_.drop("income_cat", axis=1, inplace=True)
+
+# %%
