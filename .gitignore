@@ -1,3 +1,8 @@
 #don't track data files
 *.tgz
 *.csv
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
