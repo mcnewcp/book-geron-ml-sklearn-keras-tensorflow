@@ -10,3 +10,6 @@ __pycache__/
 #environment
 .venv
 .env
+
+#keras models
+*.h5
