@@ -13,3 +13,6 @@ __pycache__/
 
 #keras models
 *.h5
+
+#tensobarod logs
+*/tb_log/
